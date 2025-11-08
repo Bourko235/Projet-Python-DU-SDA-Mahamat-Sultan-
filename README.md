@@ -1,70 +1,57 @@
-# Projet-Python-DU-SDA-Mahamat-Sultan-
-Projet Python DU SDA Mahamat Sultan 
-
-# GlucoSuivi - Application de Suivi de Diabète (Projet Streamlit)
-
-Ce projet est une application web locale développée en Python avec Streamlit, conçue pour aider les patients diabétiques à suivre leur glycémie et leur apport nutritionnel.
-
-1. Objectif du Projet
-
-L'objectif de GlucoSuivi est de fournir une application complète et sécurisée permettant aux patients de :
-Créer un compte personnel et s'y connecter de manière sécurisée.
-Enregistrer leurs mesures de glycémie et leurs repas quotidiens.
-Recevoir des conseils immédiats basés sur leurs niveaux de glycémie.
-Visualiser leur historique pour mieux comprendre l'impact de leur nutrition sur leur glycémie.
-L'application est conçue pour être utilisée localement, en centralisant les données dans des fichiers CSV pour une éventuelle analyse par un investigateur.
-
-2. Fonctionnalités Principales
-
-Piliers de l'Application (Inputs, Traitement, Dashboard)
-Inputs - Une Interface Sécurisée et Complète
-Système d'Authentification :
-Inscription : Les nouveaux utilisateurs peuvent créer un compte. Les mots de passe sont hashés (en utilisant hashlib SHA-256) et stockés dans un fichier user_db.csv, garantissant qu'aucun mot de passe n'est sauvegardé en clair.
-Connexion : Les utilisateurs existants se connectent avec leur ID Patient et mot de passe.
-Saisie de Données (Sidebar) :
-Suivi Glycémie : Saisie du taux de glycémie (mg/dL) et du moment de la mesure (à jeun, post-repas, etc.).
-Suivi Repas : Sélection d'un aliment depuis une base de données intégrée ou ajout d'un aliment "Autre" avec ses propres macros (glucides).
-Calcul de Glucides : L'application calcule automatiquement le total de glucides pour le repas saisi en fonction de la quantité.
-Traitement - Une Logique de Conseil
-Analyse en Temps Réel : L'application analyse chaque nouvelle entrée de glycémie et la compare à des seuils prédéfinis (hypoglycémie, optimal, élevé).
-Conseils Contextuels : Un message (delta) et un conseil clair sont générés et affichés à l'utilisateur (ex: "Hypoglycémie", "Mangez 15g de sucre...").
-Persistance des Données :
-user_db.csv : Stocke les informations des utilisateurs (ID et hash de mot de passe).
-diabete_master_data.csv : Stocke toutes les entrées de données (glycémie, repas) de tous les utilisateurs, les rendant disponibles pour une analyse centrale.
-
-Dashboard - Une Visualisation Claire
-Flash Info Glycémie : Affiche la dernière mesure de glycémie, le diagnostic (ex: "Optimal") et le conseil associé.
-Résumé Nutritionnel : Une carte st.metric affiche le total des glucides consommés pour la journée en cours.
-Historique de Glycémie : Un graphique en ligne (Altair) montre l'évolution de la glycémie de l'utilisateur dans le temps.
-Journal de Bord : Un tableau (st.dataframe) affiche les 20 dernières entrées de l'utilisateur (glycémie et repas) pour un suivi détaillé.
-3. Comment Lancer l'Application
-Ce projet est une application locale et ne nécessite aucun déploiement.
-Prérequis
-Python 3.x
-pip (le gestionnaire de paquets Python)
-1. Cloner ou Télécharger le Dépôt
-Assurez-vous d'avoir le fichier app.py dans un dossier.
-2. (Recommandé) Créer un Environnement Virtuel
-Ouvrez un terminal dans le dossier du projet et exécutez :
-# Créer l'environnement
+# Projet WebApp de Prédiction - Prix Immobiliers (King County)
+## 1. Objectif du Projet
+L'objectif de ce projet est de construire une application web locale avec Streamlit qui prédit le prix d'une maison individuelle dans la région de King County, USA (région de Seattle).
+L'application utilise un modèle de Machine Learning (Régression) pour effectuer les prédictions.
+## 2. Structure du Projet
+  ●	train_model.py: Script Python pour :
+    1.	Télécharger le dataset "King County House Sales".
+    2.	Sélectionner les features pertinentes.
+    3.	Définir un pipeline de prétraitement avancé (ColumnTransformer).
+    4.	Entraîner un modèle RandomForestRegressor.
+    5.	Créer un dossier models/ et y sauvegarder le pipeline complet (model_pipeline.joblib).
+  ●	app.py: Application Streamlit qui charge models/model_pipeline.joblib. Elle fournit une interface utilisateur ergonomique (sliders, listes déroulantes) pour saisir les caractéristiques de la maison et obtenir une prédiction de prix.
+  ●	models/model_pipeline.joblib: Fichier binaire du modèle, généré par train_model.py.
+  ●	requirements.txt: La liste des dépendances Python.
+  ●	README.md: Ce document.
+## 3. Dataset et Modèle
+  ### Dataset
+Nous utilisons le "King County House Sales Dataset". Nous avons sélectionné 6 caractéristiques (features) pour leur pertinence auprès de l'utilisateur final :
+  ●	Numériques :
+  ○	sqft_living: Surface habitable (en pieds carrés).
+  ○	bedrooms: Nombre de chambres.
+  ○	bathrooms: Nombre de salles de bain.
+  ○	floors: Nombre d'étages.
+  ●	Catégorielles :
+  ○	waterfront: Vue sur l'eau (0 pour Non, 1 pour Oui).
+  ○	condition: État de la maison (sur une échelle de 1 à 5).
+  La cible (target) est le price (prix de vente) de la maison.
+  ### Modèle
+Nous utilisons un Pipeline scikit-learn avancé pour gérer les différents types de données.
+  ●	Un ColumnTransformer est utilisé pour appliquer les bonnes transformations aux bonnes colonnes.
+    1.	Pour les features numériques : Un SimpleImputer (stratégie median) suivi d'un StandardScaler.
+    2.	Pour les features catégorielles : Un SimpleImputer (stratégie most_frequent) suivi d'un OneHotEncoder.
+  ●	Ces features prétraitées sont ensuite envoyées à un régresseur RandomForestRegressor (100 arbres) pour la prédiction finale.
+  Cette structure est robuste et garantit que les données saisies par l'utilisateur dans l'application subissent exactement le même traitement que les données d'entraînement.
+## 4. Comment Lancer le Projet (Localement)
+Suivez ces étapes dans votre terminal :
+ ### 1. Installer les dépendances :
+# (Recommandé) Créez un environnement virtuel
 python -m venv venv
+source venv/bin/activate  # ou .\venv\Scripts\activate sur Windows
 
-# Activer l'environnement (Windows)
-.\venv\Scripts\activate
-# ou (Mac/Linux)
-source venv/bin/activate
+# Installez les bibliothèques requises
+pip install -r requirements.txt
 
+ ### 2. Entraîner le modèle (Étape unique) :
+Cette commande va télécharger les données, créer un dossier models/, et y sauvegarder le fichier model_pipeline.joblib.
+python train_model.py
 
-3. Installer les Dépendances
-Installez les bibliothèques nécessaires :
-pip install streamlit pandas altair
-
-
-4. Lancer l'Application
-Toujours dans le terminal, exécutez :
+Vous devriez voir des messages de confirmation, incluant le score R² et le chemin de sauvegarde.
+ ### 3. Lancer l'application Streamlit :
+Une fois le modèle entraîné, lancez l'application web.
 streamlit run app.py
 
-L'application s'ouvrira automatiquement dans votre navigateur par défaut.
-
-Projet réalisé par Mahamat Sultan dans le cadre du cours Python du DU Sorbonne Data Analytics.
-
+Votre navigateur s'ouvrira automatiquement et affichera votre application.
+Projet réalisé par : 
+-	MAHAMAT SULTAN.
+-	Moustapha MEMDY
