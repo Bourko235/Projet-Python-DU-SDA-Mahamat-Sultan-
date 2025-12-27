@@ -133,4 +133,5 @@ if st.sidebar.button("Prédire le Prix", use_container_width=True, type="primary
         st.error(f"Une erreur est survenue lors de la prédiction : {e}")
 
 else:
+
     st.info("Veuillez saisir les caractéristiques dans la barre latérale et cliquer sur 'Prédire le Prix'.")
